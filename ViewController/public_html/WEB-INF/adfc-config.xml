@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<adfc-config xmlns="http://xmlns.oracle.com/adf/controller" version="1.2">
+  <view id="Query">
+    <page>/Query.jspx</page>
+    <input-page-parameter>
+      <from-value>#{param.ParamOrgId}</from-value>
+      <to-value>#{viewScope.OrgId}</to-value>
+    </input-page-parameter>
+    <input-page-parameter>
+      <from-value>#{param.ParamUserId}</from-value>
+      <to-value>#{viewScope.UserId}</to-value>
+    </input-page-parameter>
+    <input-page-parameter>
+      <from-value>#{param.ParamRespId}</from-value>
+      <to-value>#{viewScope.RespId}</to-value>
+    </input-page-parameter>
+    <input-page-parameter>
+      <from-value>#{param.ParamRespApplId}</from-value>
+      <to-value>#{viewScope.RespApplId}</to-value>
+    </input-page-parameter>
+    <input-page-parameter>
+      <from-value>#{param.POC}</from-value>
+      <to-value>#{viewScope.POCNO}</to-value>
+    </input-page-parameter>
+  </view>
+  <managed-bean id="__13">
+    <managed-bean-name id="__12">ManagedBean</managed-bean-name>
+    <managed-bean-class id="__11">view.backing.bean.Main</managed-bean-class>
+    <managed-bean-scope id="__14">request</managed-bean-scope>
+  </managed-bean>
+  <managed-bean id="__55">
+    <managed-bean-name id="__52">Excelreport</managed-bean-name>
+    <managed-bean-class id="__53">Excelreport</managed-bean-class>
+    <managed-bean-scope id="__54">request</managed-bean-scope>
+  </managed-bean>
+  <managed-bean id="__59">
+    <managed-bean-name id="__57">detailsExReport</managed-bean-name>
+    <managed-bean-class id="__56">report</managed-bean-class>
+    <managed-bean-scope id="__58">request</managed-bean-scope>
+  </managed-bean>
+  <managed-bean id="__64">
+    <managed-bean-name id="__66">detailsReport</managed-bean-name>
+    <managed-bean-class id="__65">reportMarchand</managed-bean-class>
+    <managed-bean-scope id="__67">request</managed-bean-scope>
+  </managed-bean>
+</adfc-config>
