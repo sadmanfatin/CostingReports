@@ -79,7 +79,7 @@ public class reportMarchand {
 
     //----------------------------------------------------------------------------------------
     
-    int headerNumOfCol = 17;
+    int headerNumOfCol = 18;
     int lineNumOfCol = 10;
     int detailNumOfCol = 6;
     int dryNumOfCol = 2;
@@ -252,8 +252,8 @@ public class reportMarchand {
             
             printRowData(row, headerNumOfCol, xlCol);
             xlCol=0;
-          // this.xlRowNew = xlRow;
-           // this.xlRow = xlRowNew;
+           // this.xlRowNew = xlRow;
+            // this.xlRow = xlRowNew;
             
         }
         
@@ -591,7 +591,7 @@ public class reportMarchand {
         excelrow = (HSSFRow)worksheet.getRow(xlRow);
                         excelcell = excelrow.createCell(xlCol);
                         excelcell.setCellStyle(headerStyle);
-       worksheet.addMergedRegion(new CellRangeAddress(0,0,0,16));
+       worksheet.addMergedRegion(new CellRangeAddress(0,0,0,17));
        
         sb1 = new StringBuilder();
         ViewObject searchView= appM.getFilterView1();
@@ -649,8 +649,9 @@ public class reportMarchand {
 
     private void printRowData(double[] summArray, int headerNumOfCol,
         int xlCol) {
+        xlCol+=1;
         excelrow = (HSSFRow)worksheet.getRow(xlRow);
-                        excelcell = excelrow.createCell(xlCol);
+                        excelcell = excelrow.createCell(xlCol+1);
                         excelcell.setCellStyle(headerStyle);
         excelcell.setCellValue("Total");
         worksheet.autoSizeColumn(xlCol);

@@ -78,7 +78,7 @@ public class report {
 
     //----------------------------------------------------------------------------------------
     
-    int headerNumOfCol = 17;
+    int headerNumOfCol = 18;
     int lineNumOfCol = 10;
     int detailNumOfCol = 6;
     int dryNumOfCol = 2;
@@ -596,7 +596,7 @@ public class report {
         excelrow = (HSSFRow)worksheet.getRow(xlRow);
                         excelcell = excelrow.createCell(xlCol);
                         excelcell.setCellStyle(headerStyle);
-       worksheet.addMergedRegion(new CellRangeAddress(0,0,0,16));
+       worksheet.addMergedRegion(new CellRangeAddress(0,0,0,17));
        
         sb1 = new StringBuilder();
         ViewObject searchView= appM.getFilterView1();
@@ -654,6 +654,7 @@ public class report {
 
     private void printRowData(double[] summArray, int headerNumOfCol,
         int xlCol) {
+        xlCol +=1 ;  // Total cell will start from 
         excelrow = (HSSFRow)worksheet.getRow(xlRow);
                         excelcell = excelrow.createCell(xlCol);
                         excelcell.setCellStyle(headerStyle);
