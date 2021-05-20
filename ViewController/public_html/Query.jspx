@@ -1069,6 +1069,21 @@
                              align="center">
                     <af:outputText value="#{vs.index+1}" id="outputText29"/>
                   </af:column>
+                  <af:column headerText="Poc Id"
+                             id="c4" align="center" sortable="true"
+                             filterable="true" width="60" sortProperty="PocId">
+                    <af:inputText value="#{row.bindings.PocId.inputValue}"
+                                  label="#{bindings.washCostReport1.hints.PocId.label}"
+                                  required="#{bindings.washCostReport1.hints.PocId.mandatory}"
+                                  columns="#{bindings.washCostReport1.hints.PocId.displayWidth}"
+                                  maximumLength="#{bindings.washCostReport1.hints.PocId.precision}"
+                                  shortDesc="#{bindings.washCostReport1.hints.PocId.tooltip}"
+                                  id="it4" readOnly="true">
+                      <f:validator binding="#{row.bindings.PocId.validator}"/>
+                      <af:convertNumber groupingUsed="false"
+                                        pattern="#{bindings.washCostReport1.hints.PocId.format}"/>
+                    </af:inputText>
+                  </af:column>
                   <af:column sortProperty="BuyerName" filterable="true"
                              sortable="true"
                              headerText="Buyer"

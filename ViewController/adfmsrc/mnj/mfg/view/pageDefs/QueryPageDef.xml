@@ -222,6 +222,7 @@
           <Item Value="StyleEfficiency"/>
           <Item Value="ProdPerLinePerH"/>
           <Item Value="Style"/>
+          <Item Value="PocId"/>
         </AttrNames>
       </nodeDefinition>
     </tree>
