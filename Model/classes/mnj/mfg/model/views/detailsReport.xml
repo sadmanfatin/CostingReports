@@ -76,6 +76,22 @@ SELECT POC_ID,
                  SUM (QTY) QTY,
                  AVG (FOB_WITH_SMS_SAMPLE) FOB,
                  AVG (PROFIT) PROFIT,
+--                 AVG(   
+--                   XX_FIND_PROFIT1 (
+--                     L.CM_MERCHAND,
+--                     L.SAM,
+--                     L.STYLE_EFFICIENCY,
+--                     DECODE (H.LC_UNIT,
+--                             340, 'CAL Unit1',
+--                             341, 'CGL Unit1',
+--                             H.LC_UNIT),
+--                     H.CREATION_DATE,
+--                     H.POC_ID,
+--                     L.FOB_ID,
+--                     H.CREATION_DATE,
+--                     H.ITEM_PURCHASE_TYPE)
+--                  ) 
+--                    PROFIT,
                  AVG (CM_MERCHAND) CM,
                  (  SELECT SUM (DDD.MANUAL_PRICE)
                       FROM XX_OM_POC_D2_T DDD
@@ -97,9 +113,7 @@ SELECT POC_ID,
                         (  SELECT MAX (VERSION_NO)
                              FROM XX_OM_POC_H_T H2
                             WHERE H.POC_ID = H2.POC_ID AND H2.GM_APPROVAL = 'Y'
-                         GROUP BY H2.POC_ID)  
-                         
-                         
+                         GROUP BY H2.POC_ID)         
         GROUP BY H.POC_ID,
         H.LC_UNIT ,
              H.BUYER_ID,
