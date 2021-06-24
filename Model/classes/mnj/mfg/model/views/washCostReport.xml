@@ -25,74 +25,82 @@
     Kind="where"
     Type="oracle.jbo.domain.Number"/>
   <SQLQuery>
-    <![CDATA[/* Formatted on 3/23/2021 6:08:57 PM (QP5 v5.256.13226.35538) */
-
- SELECT H.POC_ID,
-           (SELECT customer_name
+    <![CDATA[/* Formatted on 6/15/2021 11:09:46 AM (QP5 v5.256.13226.35538) */
+  SELECT H.POC_ID,
+         (SELECT customer_name
             FROM ar_customers ac
-           WHERE ac.customer_id = h.buyer_id AND status='A')
-            AS buyer_name,        
+           WHERE ac.customer_id = h.buyer_id AND status = 'A')
+            AS buyer_name,
          h.buyer_id,
-         h.season , 
-         h.STYLE ,
-         h.brand,
-          COLOR|| '-' ||WASH_NAME   COLOUR_WASH,
-         SUM (QTY) ORDER_QTY,
-         AVG (FABRIC_COST) FABRIC_COST,
-         AVG (TRIM_COST) TRIM_COST,
-         AVG (WASH_COST)WASH_COST,
-         --AVG(OTHERS),
-         (  SELECT CASE
-                      WHEN UPPER (P.REF_CODE) LIKE UPPER ('%pri%')
-                      THEN
-                         FINAL_COST_PER_PCS
-                   END
-                      PRINT
-              FROM XX_OM_POC_D1_T P
-             WHERE     P.ITEM_PREFIX = 55
-                   AND P.FOB_ID =  l.FOB_ID
-                   AND UPPER (P.REF_CODE) LIKE UPPER ('%pri%')
-          ) SERVICE_ITEM_PRINT,
-            (  SELECT CASE
-                      WHEN UPPER (P.REF_CODE) LIKE UPPER ('%emb%')
-                      THEN
-                         FINAL_COST_PER_PCS
-                   END
-                      PRINT
-              FROM XX_OM_POC_D1_T P
-             WHERE     P.ITEM_PREFIX = 55
-                   AND P.FOB_ID =  l.FOB_ID
-                   AND UPPER (P.REF_CODE) LIKE UPPER ('%EMB%')
-          ) SERVICE_ITEM_EMBROIDERY,
-         ROUND (AVG (CM_MERCHAND), 2) CM,
-         ROUND (AVG (FOB_WITH_SMS_SAMPLE), 2) fob,
-         AVG (SAM) SAM,
-         AVG (STYLE_EFFICIENCY) STYLE_EFFICIENCY,
-         AVG (PROD_PER_LINE_PER_H) PROD_PER_LINE_PER_H,L.REMARKS
-    FROM XX_OM_POC_H_T H, XX_OM_POC_L_T L, XX_OM_BPO_INFO_T B
-   WHERE     H.POC_ID = l.POC_ID
-         AND B.FOB_ID = L.FOB_ID
-        -- AND SEASON = 'C3-21 Fall'
-         --AND H.poc_id = 2743
-         AND H.GM_APPROVAL = 'Y'
-         AND H.VERSION_NO =
-                (  SELECT MAX (VERSION_NO)
-                     FROM XX_OM_POC_H_T H2
-                    WHERE H.POC_ID = H2.
-                    POC_ID AND H2.GM_APPROVAL = 'Y'
-                 GROUP BY H2.POC_ID)
-                 
---                 AND H.SEASON = :P_SEASON
---                 AND H.STYLE = :P_STYLE
- AND 1 = :param
-GROUP BY H.POC_ID, 
-  h.buyer_id,
-         h.season , 
+         h.season,
          h.STYLE,
          h.brand,
-STYLE, COLOR || '-' ||WASH_NAME ,  L.FOB_ID,
-L.REMARKS
-
+         L.COLOR || '-' || L.WASH_NAME COLOUR_WASH,
+         avg (SA.ORDER_QTY) ORDER_QTY,
+         avg (SA.SHIP_QTY) SHIP_QTY,
+         AVG (FABRIC_COST) FABRIC_COST,
+         AVG (TRIM_COST) TRIM_COST,
+         AVG (WASH_COST) WASH_COST,
+         AVG (FABRIC_FINANCE),
+         AVG (TRIM_FINANCE),
+         AVG (WASH_FINANCE),
+         (SELECT CASE
+                    WHEN UPPER (P.REF_CODE) LIKE UPPER ('%pri%')
+                    THEN
+                       FINAL_COST_PER_PCS
+                 END
+                    PRINT
+            FROM XX_OM_POC_D1_T P
+           WHERE     P.ITEM_PREFIX = 55
+                 AND P.FOB_ID = l.FOB_ID
+                 AND UPPER (P.REF_CODE) LIKE UPPER ('%pri%'))
+            SERVICE_ITEM_PRINT,
+         (SELECT CASE
+                    WHEN UPPER (P.REF_CODE) LIKE UPPER ('%emb%')
+                    THEN
+                       FINAL_COST_PER_PCS
+                 END
+                    PRINT
+            FROM XX_OM_POC_D1_T P
+           WHERE     P.ITEM_PREFIX = 55
+                 AND P.FOB_ID = l.FOB_ID
+                 AND UPPER (P.REF_CODE) LIKE UPPER ('%EMB%'))
+            SERVICE_ITEM_EMBROIDERY,
+         ROUND (AVG (CM_MERCHAND), 2) CM,
+         ROUND (AVG (FOB_WITH_SMS_SAMPLE), 2) fob,
+         AVG (SAM) COSTING_SAM,
+         AVG(ACTUAL_SAM) Actual_SAM,
+         AVG (STYLE_EFFICIENCY) COSTING_EFFICIENCY,
+         AVG(ACTUAL_EFFICIENCY) ACTUAL_EFFICIENCY,
+         AVG (PROD_PER_LINE_PER_H) PROD_PER_LINE_PER_H,
+         L.SHIPMENT
+        , L.SHIPMENT_VALUE,
+            CASE
+          WHEN avg (SA.ORDER_QTY) = 0 THEN 0
+          ELSE ROUND ( ( (NVL ( (NVL (avg (SA.SHIP_QTY), 0) - NVL (avg (SA.ORDER_QTY ), 0)), 0)) / avg (SA.ORDER_QTY)) * 100, 2)
+       END
+          SHIPMENT_PCT,
+         L.REMARKS
+    FROM XX_OM_POC_H_T H,
+         XX_OM_POC_L_T L,
+         XX_OM_SAM_EFFICIENCY SE,
+         XX_OM_SALES_QTY_V SA  
+   WHERE H.POC_ID = l.POC_ID
+         AND L.FOB_ID = SA.FOB_ID
+         AND H.GM_APPROVAL = 'Y'
+         AND SE.SYSTEM_ID = L.SYSTEM_ID
+         AND 1 = :param
+GROUP BY H.POC_ID,
+         h.buyer_id,
+         h.season,
+         h.STYLE,
+         h.brand,
+         L.SYSTEM_ID,
+         L.COLOR || '-' || L.WASH_NAME,
+         L.FOB_ID,
+         L.SHIPMENT,
+         L.SHIPMENT_VALUE,
+         L.REMARKS
 ORDER BY POC_ID]]>
   </SQLQuery>
   <ViewAttribute
@@ -214,6 +222,20 @@ ORDER BY POC_ID]]>
     </DesignTime>
   </ViewAttribute>
   <ViewAttribute
+    Name="ShipQty"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="oracle.jbo.domain.Number"
+    ColumnType="NUMBER"
+    AliasName="SHIP_QTY"
+    Expression="SHIP_QTY"
+    SQLType="NUMERIC">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="39"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
     Name="FabricCost"
     IsUpdateable="false"
     IsPersistent="false"
@@ -250,6 +272,48 @@ ORDER BY POC_ID]]>
     ColumnType="NUMBER"
     AliasName="WASH_COST"
     Expression="WASH_COST"
+    SQLType="NUMERIC">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="39"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="AvgFabricFinance"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="oracle.jbo.domain.Number"
+    ColumnType="NUMBER"
+    AliasName="AVG(FABRIC_FINANCE)"
+    Expression="AVG(FABRIC_FINANCE)"
+    SQLType="NUMERIC">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="39"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="AvgTrimFinance"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="oracle.jbo.domain.Number"
+    ColumnType="NUMBER"
+    AliasName="AVG(TRIM_FINANCE)"
+    Expression="AVG(TRIM_FINANCE)"
+    SQLType="NUMERIC">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="39"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="AvgWashFinance"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="oracle.jbo.domain.Number"
+    ColumnType="NUMBER"
+    AliasName="AVG(WASH_FINANCE)"
+    Expression="AVG(WASH_FINANCE)"
     SQLType="NUMERIC">
     <DesignTime>
       <Attr Name="_DisplaySize" Value="39"/>
@@ -312,29 +376,57 @@ ORDER BY POC_ID]]>
     </DesignTime>
   </ViewAttribute>
   <ViewAttribute
-    Name="Sam"
+    Name="CostingSam"
     IsUpdateable="false"
     IsPersistent="false"
     PrecisionRule="true"
     Type="oracle.jbo.domain.Number"
     ColumnType="NUMBER"
-    AliasName="SAM"
-    Expression="SAM"
+    AliasName="COSTING_SAM"
+    Expression="COSTING_SAM"
     SQLType="NUMERIC">
     <DesignTime>
       <Attr Name="_DisplaySize" Value="39"/>
     </DesignTime>
   </ViewAttribute>
   <ViewAttribute
-    Name="StyleEfficiency"
+    Name="ActualSam"
     IsUpdateable="false"
     IsPersistent="false"
     PrecisionRule="true"
     Type="oracle.jbo.domain.Number"
     ColumnType="NUMBER"
-    AliasName="STYLE_EFFICIENCY"
-    SQLType="NUMERIC"
-    Expression="STYLE_EFFICIENCY">
+    AliasName="ACTUAL_SAM"
+    Expression="ACTUAL_SAM"
+    SQLType="NUMERIC">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="39"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="CostingEfficiency"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="oracle.jbo.domain.Number"
+    ColumnType="NUMBER"
+    AliasName="COSTING_EFFICIENCY"
+    Expression="COSTING_EFFICIENCY"
+    SQLType="NUMERIC">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="39"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="ActualEfficiency"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="oracle.jbo.domain.Number"
+    ColumnType="NUMBER"
+    AliasName="ACTUAL_EFFICIENCY"
+    Expression="ACTUAL_EFFICIENCY"
+    SQLType="NUMERIC">
     <DesignTime>
       <Attr Name="_DisplaySize" Value="39"/>
     </DesignTime>
@@ -354,6 +446,49 @@ ORDER BY POC_ID]]>
     </DesignTime>
   </ViewAttribute>
   <ViewAttribute
+    Name="Shipment"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="250"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="SHIPMENT"
+    Expression="SHIPMENT"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="250"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="ShipmentValue"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="oracle.jbo.domain.Number"
+    ColumnType="NUMBER"
+    AliasName="SHIPMENT_VALUE"
+    Expression="SHIPMENT_VALUE"
+    SQLType="NUMERIC">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="39"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="ShipmentPct"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="java.lang.Double"
+    ColumnType="NUMBER"
+    AliasName="SHIPMENT_PCT"
+    Expression="SHIPMENT_PCT"
+    SQLType="DOUBLE">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="39"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
     Name="Remarks"
     IsUpdateable="false"
     IsPersistent="false"
@@ -366,34 +501,6 @@ ORDER BY POC_ID]]>
     SQLType="VARCHAR">
     <DesignTime>
       <Attr Name="_DisplaySize" Value="500"/>
-    </DesignTime>
-  </ViewAttribute>
-  <ViewAttribute
-    Name="StyleNo"
-    IsUpdateable="false"
-    IsPersistent="false"
-    PrecisionRule="true"
-    Precision="500"
-    Type="java.lang.String"
-    ColumnType="VARCHAR2"
-    AliasName="STYLE_NO"
-    SQLType="VARCHAR">
-    <DesignTime>
-      <Attr Name="_DisplaySize" Value="500"/>
-    </DesignTime>
-  </ViewAttribute>
-  <ViewAttribute
-    Name="StyleName"
-    IsUpdateable="false"
-    IsPersistent="false"
-    PrecisionRule="true"
-    Precision="250"
-    Type="java.lang.String"
-    ColumnType="VARCHAR2"
-    AliasName="STYLE_NAME"
-    SQLType="VARCHAR">
-    <DesignTime>
-      <Attr Name="_DisplaySize" Value="250"/>
     </DesignTime>
   </ViewAttribute>
   <ResourceBundle>

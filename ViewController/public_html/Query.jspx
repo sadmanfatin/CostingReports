@@ -937,23 +937,6 @@
                     </af:column>
                   </af:column>
                   <af:column id="c61" headerText="Shipment" align="center">
-                    <af:column sortProperty="Difference" filterable="true"
-                               sortable="true"
-                               headerText="Difference"
-                               id="c49" align="center" width="80"
-                               inlineStyle="background-color:#{row.bindings.Difference.inputValue &lt;= '0' ? 'rgb(115,255,115)':'rgb(255,132,132)'};">
-                      <af:inputText value="#{row.bindings.Difference.inputValue}"
-                                    label="#{bindings.orderVsSaleVO1.hints.Difference.label}"
-                                    required="#{bindings.orderVsSaleVO1.hints.Difference.mandatory}"
-                                    columns="#{bindings.orderVsSaleVO1.hints.Difference.displayWidth}"
-                                    maximumLength="#{bindings.orderVsSaleVO1.hints.Difference.precision}"
-                                    shortDesc="#{bindings.orderVsSaleVO1.hints.Difference.tooltip}"
-                                    id="it15">
-                        <f:validator binding="#{row.bindings.Difference.validator}"/>
-                        <af:convertNumber groupingUsed="false"
-                                          pattern="#{bindings.orderVsSaleVO1.hints.Difference.format}"/>
-                      </af:inputText>
-                    </af:column>
                     <af:column sortProperty="ExcessShipment" filterable="true"
                                sortable="true"
                                headerText="Excess Shipment"
@@ -989,7 +972,8 @@
                     <af:column sortProperty="ShipmentPct" filterable="true"
                                sortable="true"
                                headerText="Shipment (%)"
-                               id="c47" width="80">
+                               id="c47" width="80"
+                               inlineStyle="background-color:#{row.bindings.ShipmentPct.inputValue &lt; 0.0 ?  'rgb(200,170,170)' : 'rgb(170,200,170)' };">
                       <af:inputText value="#{row.bindings.ShipmentPct.inputValue}"
                                     label="#{bindings.orderVsSaleVO1.hints.ShipmentPct.label}"
                                     required="#{bindings.orderVsSaleVO1.hints.ShipmentPct.mandatory}"
@@ -1169,6 +1153,22 @@
                                         pattern="#{bindings.washCostReport1.hints.OrderQty.format}"/>
                     </af:inputText>
                   </af:column>
+                  <af:column headerText="Ship Qty"
+                             id="c5" align="center" sortable="true"
+                             filterable="true" width="40"
+                             sortProperty="ShipQty">
+                    <af:inputText value="#{row.bindings.ShipQty.inputValue}"
+                                  label="#{bindings.washCostReport1.hints.ShipQty.label}"
+                                  required="#{bindings.washCostReport1.hints.ShipQty.mandatory}"
+                                  columns="#{bindings.washCostReport1.hints.ShipQty.displayWidth}"
+                                  maximumLength="#{bindings.washCostReport1.hints.ShipQty.precision}"
+                                  shortDesc="#{bindings.washCostReport1.hints.ShipQty.tooltip}"
+                                  id="it8" readOnly="true">
+                      <f:validator binding="#{row.bindings.ShipQty.validator}"/>
+                      <af:convertNumber groupingUsed="false"
+                                        pattern="#{bindings.washCostReport1.hints.ShipQty.format}"/>
+                    </af:inputText>
+                  </af:column>
                   <af:column sortProperty="FabricCost" filterable="true"
                              sortable="true" headerText="Fabric Cost" id="c100"
                              align="center" width="40">
@@ -1215,6 +1215,54 @@
                                         pattern="#{bindings.washCostReport1.hints.WashCost.format}"/>
                     </af:inputText>
                   </af:column>
+                  <af:column headerText="Fabric Finance"
+                             id="c6" align="center" sortable="true"
+                             filterable="true" width="40"
+                             sortProperty="AvgFabricFinance">
+                    <af:inputText value="#{row.bindings.AvgFabricFinance.inputValue}"
+                                  label="#{bindings.washCostReport1.hints.AvgFabricFinance.label}"
+                                  required="#{bindings.washCostReport1.hints.AvgFabricFinance.mandatory}"
+                                  columns="#{bindings.washCostReport1.hints.AvgFabricFinance.displayWidth}"
+                                  maximumLength="#{bindings.washCostReport1.hints.AvgFabricFinance.precision}"
+                                  shortDesc="#{bindings.washCostReport1.hints.AvgFabricFinance.tooltip}"
+                                  id="it9">
+                      <f:validator binding="#{row.bindings.AvgFabricFinance.validator}"/>
+                      <af:convertNumber groupingUsed="false"
+                                        pattern="#{bindings.washCostReport1.hints.AvgFabricFinance.format}"/>
+                    </af:inputText>
+                  </af:column>
+                  <af:column headerText="Trim Finance"
+                             id="c7" align="center" sortable="true"
+                             filterable="true" width="40"
+                             sortProperty="AvgTrimFinance">
+                    <af:inputText value="#{row.bindings.AvgTrimFinance.inputValue}"
+                                  label="#{bindings.washCostReport1.hints.AvgTrimFinance.label}"
+                                  required="#{bindings.washCostReport1.hints.AvgTrimFinance.mandatory}"
+                                  columns="#{bindings.washCostReport1.hints.AvgTrimFinance.displayWidth}"
+                                  maximumLength="#{bindings.washCostReport1.hints.AvgTrimFinance.precision}"
+                                  shortDesc="#{bindings.washCostReport1.hints.AvgTrimFinance.tooltip}"
+                                  id="it23">
+                      <f:validator binding="#{row.bindings.AvgTrimFinance.validator}"/>
+                      <af:convertNumber groupingUsed="false"
+                                        pattern="#{bindings.washCostReport1.hints.AvgTrimFinance.format}"/>
+                    </af:inputText>
+                  </af:column>
+                  <af:column headerText="Wash Finance"
+                             id="c8" align="center" sortable="true"
+                             filterable="true" width="40"
+                             sortProperty="AvgWashFinance">
+                    <af:inputText value="#{row.bindings.AvgWashFinance.inputValue}"
+                                  label="#{bindings.washCostReport1.hints.AvgWashFinance.label}"
+                                  required="#{bindings.washCostReport1.hints.AvgWashFinance.mandatory}"
+                                  columns="#{bindings.washCostReport1.hints.AvgWashFinance.displayWidth}"
+                                  maximumLength="#{bindings.washCostReport1.hints.AvgWashFinance.precision}"
+                                  shortDesc="#{bindings.washCostReport1.hints.AvgWashFinance.tooltip}"
+                                  id="it28">
+                      <f:validator binding="#{row.bindings.AvgWashFinance.validator}"/>
+                      <af:convertNumber groupingUsed="false"
+                                        pattern="#{bindings.washCostReport1.hints.AvgWashFinance.format}"/>
+                    </af:inputText>
+                  </af:column>
                   <af:column sortProperty="ServiceItemPrint" filterable="true"
                              sortable="true"
                              headerText="Service Item (Print)"
@@ -1248,7 +1296,7 @@
                     </af:inputText>
                   </af:column>
                   <af:column sortProperty="Cm" filterable="true" sortable="true"
-                             headerText="Cm" id="c96" align="center" width="40">
+                             headerText="CM" id="c96" align="center" width="40">
                     <af:inputText value="#{row.bindings.Cm.inputValue}"
                                   label="#{bindings.washCostReport1.hints.Cm.label}"
                                   required="#{bindings.washCostReport1.hints.Cm.mandatory}"
@@ -1262,7 +1310,7 @@
                     </af:inputText>
                   </af:column>
                   <af:column sortProperty="Fob" filterable="true"
-                             sortable="true" headerText="Fob" id="c72"
+                             sortable="true" headerText="FOB" id="c72"
                              width="40" align="center">
                     <af:inputText value="#{row.bindings.Fob.inputValue}"
                                   label="#{bindings.washCostReport1.hints.Fob.label}"
@@ -1276,19 +1324,36 @@
                                         pattern="#{bindings.washCostReport1.hints.Fob.format}"/>
                     </af:inputText>
                   </af:column>
-                  <af:column sortProperty="Sam" filterable="true"
-                             sortable="true" headerText="Sam" id="c89"
-                             align="center" width="40">
-                    <af:inputText value="#{row.bindings.Sam.inputValue}"
-                                  label="#{bindings.washCostReport1.hints.Sam.label}"
-                                  required="#{bindings.washCostReport1.hints.Sam.mandatory}"
-                                  columns="#{bindings.washCostReport1.hints.Sam.displayWidth}"
-                                  maximumLength="#{bindings.washCostReport1.hints.Sam.precision}"
-                                  shortDesc="#{bindings.washCostReport1.hints.Sam.tooltip}"
-                                  id="it47">
-                      <f:validator binding="#{row.bindings.Sam.validator}"/>
+                  <af:column sortProperty="CostingSam"
+                             sortable="true"
+                             headerText="Costing SAM" id="c89"
+                             align="center" width="40" filterable="true">
+                    <af:inputText value="#{row.bindings.CostingSam.inputValue}"
+                                  label="#{bindings.washCostReport1.hints.CostingSam.label}"
+                                  required="#{bindings.washCostReport1.hints.CostingSam.mandatory}"
+                                  columns="#{bindings.washCostReport1.hints.CostingSam.displayWidth}"
+                                  maximumLength="#{bindings.washCostReport1.hints.CostingSam.precision}"
+                                  shortDesc="#{bindings.washCostReport1.hints.CostingSam.tooltip}"
+                                  id="it29">
+                      <f:validator binding="#{row.bindings.CostingSam.validator}"/>
                       <af:convertNumber groupingUsed="false"
-                                        pattern="#{bindings.washCostReport1.hints.Sam.format}"/>
+                                        pattern="#{bindings.washCostReport1.hints.CostingSam.format}"/>
+                    </af:inputText>
+                  </af:column>
+                  <af:column headerText="Actual SAM"
+                             id="c9" align="center" sortable="true"
+                             filterable="true" width="40"
+                             sortProperty="ActualSam">
+                    <af:inputText value="#{row.bindings.ActualSam.inputValue}"
+                                  label="#{bindings.washCostReport1.hints.ActualSam.label}"
+                                  required="#{bindings.washCostReport1.hints.ActualSam.mandatory}"
+                                  columns="#{bindings.washCostReport1.hints.ActualSam.displayWidth}"
+                                  maximumLength="#{bindings.washCostReport1.hints.ActualSam.precision}"
+                                  shortDesc="#{bindings.washCostReport1.hints.ActualSam.tooltip}"
+                                  id="it32" readOnly="true">
+                      <f:validator binding="#{row.bindings.ActualSam.validator}"/>
+                      <af:convertNumber groupingUsed="false"
+                                        pattern="#{bindings.washCostReport1.hints.ActualSam.format}"/>
                     </af:inputText>
                   </af:column>
                   <af:column sortProperty="ProdPerLinePerH" filterable="true"
@@ -1300,25 +1365,75 @@
                                   columns="#{bindings.washCostReport1.hints.ProdPerLinePerH.displayWidth}"
                                   maximumLength="#{bindings.washCostReport1.hints.ProdPerLinePerH.precision}"
                                   shortDesc="#{bindings.washCostReport1.hints.ProdPerLinePerH.tooltip}"
-                                  id="it12">
+                                  id="it12" readOnly="true">
                       <f:validator binding="#{row.bindings.ProdPerLinePerH.validator}"/>
                       <af:convertNumber groupingUsed="false"
                                         pattern="#{bindings.washCostReport1.hints.ProdPerLinePerH.format}"/>
                     </af:inputText>
                   </af:column>
-                  <af:column sortProperty="StyleEfficiency" filterable="true"
-                             sortable="true" headerText="Style Efficiency"
-                             id="c86" align="center" width="60">
-                    <af:inputText value="#{row.bindings.StyleEfficiency.inputValue}"
-                                  label="#{bindings.washCostReport1.hints.StyleEfficiency.label}"
-                                  required="#{bindings.washCostReport1.hints.StyleEfficiency.mandatory}"
-                                  columns="#{bindings.washCostReport1.hints.StyleEfficiency.displayWidth}"
-                                  maximumLength="#{bindings.washCostReport1.hints.StyleEfficiency.precision}"
-                                  shortDesc="#{bindings.washCostReport1.hints.StyleEfficiency.tooltip}"
-                                  id="it42">
-                      <f:validator binding="#{row.bindings.StyleEfficiency.validator}"/>
+                  <af:column sortProperty="CostingEfficiency"
+                             sortable="true"
+                             headerText="Costing Efficiency"
+                             id="c86" align="center" width="60"
+                             filterable="true">
+                    <af:inputText value="#{row.bindings.CostingEfficiency.inputValue}"
+                                  label="#{bindings.washCostReport1.hints.CostingEfficiency.label}"
+                                  required="#{bindings.washCostReport1.hints.CostingEfficiency.mandatory}"
+                                  columns="#{bindings.washCostReport1.hints.CostingEfficiency.displayWidth}"
+                                  maximumLength="#{bindings.washCostReport1.hints.CostingEfficiency.precision}"
+                                  shortDesc="#{bindings.washCostReport1.hints.CostingEfficiency.tooltip}"
+                                  id="it36" readOnly="true">
+                      <f:validator binding="#{row.bindings.CostingEfficiency.validator}"/>
                       <af:convertNumber groupingUsed="false"
-                                        pattern="#{bindings.washCostReport1.hints.StyleEfficiency.format}"/>
+                                        pattern="#{bindings.washCostReport1.hints.CostingEfficiency.format}"/>
+                    </af:inputText>
+                  </af:column>
+                  <af:column headerText="Actual Efficiency"
+                             id="c10" width="60" align="center" sortable="true"
+                             filterable="true" sortProperty="ActualEfficiency">
+                    <af:inputText value="#{row.bindings.ActualEfficiency.inputValue}"
+                                  label="#{bindings.washCostReport1.hints.ActualEfficiency.label}"
+                                  required="#{bindings.washCostReport1.hints.ActualEfficiency.mandatory}"
+                                  columns="#{bindings.washCostReport1.hints.ActualEfficiency.displayWidth}"
+                                  maximumLength="#{bindings.washCostReport1.hints.ActualEfficiency.precision}"
+                                  shortDesc="#{bindings.washCostReport1.hints.ActualEfficiency.tooltip}"
+                                  id="it38" readOnly="true">
+                      <f:validator binding="#{row.bindings.ActualEfficiency.validator}"/>
+                      <af:convertNumber groupingUsed="false"
+                                        pattern="#{bindings.washCostReport1.hints.ActualEfficiency.format}"/>
+                    </af:inputText>
+                  </af:column>
+                  <af:column headerText="Costing Shipment Prct (%)"
+                             id="c12" align="center" sortable="false"
+                             filterable="true" width="60"
+                             sortProperty="Shipment Value">
+                    <af:inputText value="#{row.bindings.ShipmentValue.inputValue}"
+                                  label="#{bindings.washCostReport1.hints.ShipmentValue.label}"
+                                  required="#{bindings.washCostReport1.hints.ShipmentValue.mandatory}"
+                                  columns="#{bindings.washCostReport1.hints.ShipmentValue.displayWidth}"
+                                  maximumLength="#{bindings.washCostReport1.hints.ShipmentValue.precision}"
+                                  shortDesc="#{bindings.washCostReport1.hints.ShipmentValue.tooltip}"
+                                  id="it15" readOnly="true">
+                      <f:validator binding="#{row.bindings.ShipmentValue.validator}"/>
+                      <af:convertNumber groupingUsed="false"
+                                        pattern="#{bindings.washCostReport1.hints.ShipmentValue.format}"/>
+                    </af:inputText>
+                  </af:column>
+                  <af:column headerText="Actual Shipment Prct (%)"
+                             id="c11" align="center" sortable="true"
+                             filterable="true" width="55"
+                             sortProperty="ShipmentPct"
+                             inlineStyle="background-color:#{row.bindings.ShipmentPct.inputValue &lt; 0.0 ?  'rgb(200,170,170)' : 'rgb(170,200,170)' };">
+                    <af:inputText value="#{row.bindings.ShipmentPct.inputValue}"
+                                  label="#{bindings.washCostReport1.hints.ShipmentPct.label}"
+                                  required="#{bindings.washCostReport1.hints.ShipmentPct.mandatory}"
+                                  columns="#{bindings.washCostReport1.hints.ShipmentPct.displayWidth}"
+                                  maximumLength="#{bindings.washCostReport1.hints.ShipmentPct.precision}"
+                                  shortDesc="#{bindings.washCostReport1.hints.ShipmentPct.tooltip}"
+                                  id="it39" readOnly="true">
+                      <f:validator binding="#{row.bindings.ShipmentPct.validator}"/>
+                      <af:convertNumber groupingUsed="false"
+                                        pattern="#{bindings.washCostReport1.hints.ShipmentPct.format}"/>
                     </af:inputText>
                   </af:column>
                   <af:column sortProperty="Remarks" filterable="true"

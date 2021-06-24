@@ -218,11 +218,19 @@
           <Item Value="FabricCost"/>
           <Item Value="TrimCost"/>
           <Item Value="Remarks"/>
-          <Item Value="Sam"/>
-          <Item Value="StyleEfficiency"/>
+          <Item Value="CostingSam"/>
+          <Item Value="CostingEfficiency"/>
           <Item Value="ProdPerLinePerH"/>
           <Item Value="Style"/>
           <Item Value="PocId"/>
+          <Item Value="ShipQty"/>
+          <Item Value="AvgFabricFinance"/>
+          <Item Value="AvgTrimFinance"/>
+          <Item Value="AvgWashFinance"/>
+          <Item Value="ActualSam"/>
+          <Item Value="ActualEfficiency"/>
+          <Item Value="ShipmentPct"/>
+          <Item Value="ShipmentValue"/>
         </AttrNames>
       </nodeDefinition>
     </tree>

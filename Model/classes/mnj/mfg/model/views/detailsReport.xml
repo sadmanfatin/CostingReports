@@ -109,6 +109,7 @@ SELECT POC_ID,
                --  AND SEASON = 'C3-21 Fall'
                  --AND H.poc_id = 2743
                  AND H.GM_APPROVAL = 'Y'
+                  AND B.STATUS= 1  
                  AND H.VERSION_NO =
                         (  SELECT MAX (VERSION_NO)
                              FROM XX_OM_POC_H_T H2

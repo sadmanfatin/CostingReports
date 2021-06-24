@@ -29,7 +29,7 @@
 SELECT 
        CASE
           WHEN OVS.ORD_QTY = 0 THEN 0
-          ELSE ROUND ( (ABS (NVL ( (NVL (OVS.ORD_QTY, 0) - NVL (OVS.SALES_QTY, 0)), 0)) / OVS.ORD_QTY) * 100, 2)
+          ELSE ROUND ( ( (NVL ( (NVL (OVS.SALES_QTY, 0) - NVL (OVS.ORD_QTY, 0)), 0)) / OVS.ORD_QTY) * 100, 2)
        END
           SHIPMENT_PCT,
    OVS.POC_ID,
@@ -71,11 +71,11 @@ SELECT
     IsUpdateable="false"
     IsPersistent="false"
     PrecisionRule="true"
-    Type="oracle.jbo.domain.Number"
+    Type="java.lang.Double"
     ColumnType="NUMBER"
     AliasName="SHIPMENT_PCT"
     Expression="SHIPMENT_PCT"
-    SQLType="NUMERIC">
+    SQLType="DOUBLE">
     <DesignTime>
       <Attr Name="_DisplaySize" Value="39"/>
     </DesignTime>
