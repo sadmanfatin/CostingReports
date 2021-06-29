@@ -86,9 +86,9 @@
          XX_OM_SAM_EFFICIENCY SE,
          XX_OM_SALES_QTY_V SA  
    WHERE H.POC_ID = l.POC_ID
-         AND L.FOB_ID = SA.FOB_ID
+         AND L.FOB_ID = SA.FOB_ID(+)
          AND H.GM_APPROVAL = 'Y'
-         AND SE.SYSTEM_ID = L.SYSTEM_ID
+         AND  L.SYSTEM_ID = SE.SYSTEM_ID(+)
          AND 1 = :param
 GROUP BY H.POC_ID,
          h.buyer_id,
