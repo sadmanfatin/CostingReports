@@ -20,7 +20,7 @@
     </SchemaBasedProperties>
   </Properties>
   <SQLQuery>
-    <![CDATA[select * from ar_customers ac where AC.CUSTOMER_NAME_PHONETIC in ('EM', 'UM')and STATUS='A']]>
+    <![CDATA[select * from ar_customers ac where AC.CUSTOMER_NAME_PHONETIC in ('UM')and STATUS='A']]>
   </SQLQuery>
   <ViewAttribute
     Name="CustomerId"

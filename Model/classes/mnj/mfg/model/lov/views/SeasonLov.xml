@@ -28,13 +28,12 @@
     Kind="where"
     Type="java.lang.String"/>
   <SQLQuery>
-    <![CDATA[select qr.character1 customer_name, qr.character2 season, ac.CUSTOMER_ID
-  from qa_results qr, qa_plans qp, ar_customers ac
- where qr.plan_id = qp.plan_id
-   and ac.CUSTOMER_NAME = qr.character1
-   and qp.name = 'BUYER WISE DETAILS OM'
-   and trunc(sysdate) between to_date(qr.character3, 'YYYY-MM-DD') and
-       nvl(to_date(qr.character4, 'YYYY-MM-DD'), trunc(sysdate))]]>
+    <![CDATA[SELECT DISTINCT   APPS.XX_OM_BUYER_NAME_FOR_ID(BUYER_ID) CUSTOMER_NAME ,SEASON , season_id,   BUYER_ID CUSTOMER_ID
+FROM XX_OM_BUYERWISE_SEASON_T 
+WHERE 1=1
+AND STATUS = 1
+and  APPS.XX_OM_BUYER_NAME_FOR_ID(BUYER_ID) is not null
+order by  BUYER_ID  desc]]>
   </SQLQuery>
   <ViewAttribute
     Name="CustomerName"
@@ -77,6 +76,21 @@
           Value="15"/>
       </SchemaBasedProperties>
     </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="SeasonId"
+    IsUpdateable="false"
+    IsPersistent="false"
+    IsNotNull="true"
+    PrecisionRule="true"
+    Type="oracle.jbo.domain.Number"
+    ColumnType="NUMBER"
+    AliasName="SEASON_ID"
+    Expression="SEASON_ID"
+    SQLType="NUMERIC">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="39"/>
+    </DesignTime>
   </ViewAttribute>
   <ViewAttribute
     Name="CustomerId"
